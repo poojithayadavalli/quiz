@@ -1,0 +1,50 @@
+import mysql.connector
+mydb=mysql.connector.connect(
+    host="localhost",
+    user="root",
+    passwd="",
+    database="quiz"
+    )
+mycursor=mydb.cursor()
+
+
+class Question:
+    def __init__(self,prompt,answer):
+        self.prompt = prompt
+        self.answer=answer
+
+question_prompts = [
+    "what colours are apples?\n(a) red/green\n(b)orange",
+    "what color are bananas?\n(a) red/green\n(b)yellow",
+    ]
+
+questions=[
+    Question(question_prompts[0],"a"),
+    Question(question_prompts[1],"b"),
+    ]
+
+def run_quiz(questions):
+    count=0
+    for question in questions:
+        answer=input(question.prompt)
+        if answer==question.answer:
+            count=count+1
+    return count
+   
+print("GIVE YOUR DETAILS ")
+
+
+
+query=("insert into studetails(name,dpmt,regno,marks) values(%s,%s,%s,%s)")
+name=input("enter your name")
+dpmt=input("enter your dpmt")
+regno=input("enter your reg_no")
+
+
+
+marks=run_quiz(questions)
+
+val=(name,dpmt,regno,marks)
+mycursor.execute(query,val)
+mydb.commit()
+print("updated succesfully")
